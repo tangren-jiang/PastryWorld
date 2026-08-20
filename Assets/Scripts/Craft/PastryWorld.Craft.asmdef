@@ -1,0 +1,14 @@
+{
+    "name": "PastryWorld.Craft",
+    "rootNamespace": "PastryWorld.Craft",
+    "references": ["PastryWorld.Core", "PastryWorld.Input"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

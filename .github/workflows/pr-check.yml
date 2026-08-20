@@ -1,0 +1,32 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  pr-check:
+    name: Compile Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-PRCheck-${{ hashFiles('Assets/**', 'Packages/**') }}
+
+      - name: Compile Check
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          targetPlatform: StandaloneLinux64
+          projectPath: .
+          buildName: PastryWorld
+          buildsPath: Builds
+          buildMethod: PastryWorld.Editor.BuildUtility.CompileCheck

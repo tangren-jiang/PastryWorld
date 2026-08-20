@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="codex-entry">
+        <ui:Label class="codex-title" text="桂花糕"/>
+        <ui:Label class="codex-body" text="桂花糕是一种传统中式糕点..."/>
+        <ui:VisualElement class="codex-quality-mark"/>
+    </ui:VisualElement>
+</ui:UXML>

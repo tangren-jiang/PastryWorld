@@ -1,0 +1,63 @@
+# === Unity ===
+# 来源：GitHub官方Unity .gitignore模板
+# https://github.com/github/gitignore/blob/main/Unity.gitignore
+
+# Unity 生成的文件夹（不入库）
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# MemoryCaptures（内存快照）
+/[Mm]emoryCaptures/
+
+# Recordings（录屏）
+/[Rr]ecordings/
+
+# Exception crashes（崩溃日志）
+/sysinfo.txt
+/crashlytics-build.properties
+/crashlytics.properties
+/PROJECT_ROOT/symbols.zip
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity meta 文件（重要：.meta 文件需要入库！不要忽略）
+# 注意：只忽略特定位置的meta，不能全局忽略
+
+# 构建产物
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 加密/敏感信息
+*.env
+secrets.json
+*.keystore
+!*.keystore.meta

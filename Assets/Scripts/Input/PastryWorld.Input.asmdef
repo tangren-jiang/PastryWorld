@@ -1,0 +1,14 @@
+{
+    "name": "PastryWorld.Input",
+    "rootNamespace": "PastryWorld.Input",
+    "references": ["Unity.InputSystem", "PastryWorld.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

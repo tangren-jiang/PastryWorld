@@ -1,0 +1,32 @@
+.codex-entry {
+    background-image: url("project://database/Assets/Art/UI/TestPaperTexture.png");
+    background-size: cover;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 4px;
+}
+
+.codex-title {
+    font-size: 24px;
+    color: #2c1810;
+    margin-bottom: 8px;
+}
+
+.codex-body {
+    font-size: 14px;
+    color: #4a3520;
+}
+
+.codex-quality-mark {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* 翻页动画 */
+.flip-out {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
