@@ -27,6 +27,8 @@ namespace PastryWorld.Craft
     /// </summary>
     public struct CraftFlowCompletedEvent
     {
+        /// <summary>配方 ID（T8 熟练度记录用）。</summary>
+        public string recipeId;
         public float overallQuality;
         public bool allStepsSuccess;
         public int totalSteps;
