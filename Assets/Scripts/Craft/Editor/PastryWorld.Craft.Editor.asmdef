@@ -1,8 +1,8 @@
 {
-    "name": "PastryWorld.Craft",
-    "rootNamespace": "PastryWorld.Craft",
-    "references": ["PastryWorld.Core", "PastryWorld.Input", "Unity.InputSystem"],
-    "includePlatforms": [],
+    "name": "PastryWorld.Craft.Editor",
+    "rootNamespace": "PastryWorld.Craft.Editor",
+    "references": ["PastryWorld.Craft", "PastryWorld.Core", "PastryWorld.Input", "Unity.InputSystem"],
+    "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
