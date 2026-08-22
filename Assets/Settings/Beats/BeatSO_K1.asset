@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8774ecdefd6144d1fb1a879dc45b68e3, type: 3}
+  m_Name: BeatSO_K1
+  m_EditorClassIdentifier: 
+  beatId: K1
+  beatType: 0
+  dialogueText: "\u8702\u871C\u5A46\u5A46\uFF1A\u6765\uFF0C\u5B69\u5B50\uFF0C\u5C1D\u5C1D\u8FD9\u8702\u871C\u6D82\u679C\u5E72\u3002"
+  portrait: {fileID: 0}
+  nextBeatId: K2

@@ -14,7 +14,7 @@ namespace PastryWorld.Core
     }
 
     /// <summary>
-    /// 事件总线空实现。实际逻辑在 T4 开发周完成。
+    /// 事件总线实现。基于类型安全的泛型订阅。
     /// </summary>
     public class EventBus : IEventBus
     {
@@ -22,17 +22,44 @@ namespace PastryWorld.Core
 
         public void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : struct
         {
-            // TODO(T4): 实现订阅逻辑
+            if (handler == null) return;
+            var type = typeof(TEvent);
+            if (!_handlers.TryGetValue(type, out var list))
+            {
+                list = new List<Action<TEvent>>();
+                _handlers[type] = list;
+            }
+            ((List<Action<TEvent>>)list).Add(handler);
         }
 
         public void Unsubscribe<TEvent>(Action<TEvent> handler) where TEvent : struct
         {
-            // TODO(T4): 实现取消订阅逻辑
+            if (handler == null) return;
+            var type = typeof(TEvent);
+            if (_handlers.TryGetValue(type, out var list))
+            {
+                ((List<Action<TEvent>>)list).Remove(handler);
+            }
         }
 
         public void Publish<TEvent>(TEvent evt) where TEvent : struct
         {
-            // TODO(T4): 实现发布逻辑
+            var type = typeof(TEvent);
+            if (_handlers.TryGetValue(type, out var list))
+            {
+                var handlers = (List<Action<TEvent>>)list;
+                // 复制一份避免迭代中修改
+                var copy = handlers.ToArray();
+                foreach (var handler in copy)
+                {
+                    handler?.Invoke(evt);
+                }
+            }
+        }
+
+        public void Clear()
+        {
+            _handlers.Clear();
         }
     }
 }
