@@ -15,6 +15,8 @@ namespace PastryWorld.Craft
         [SerializeField] private bool _autoStart = false;
         [Tooltip("步骤间延迟（秒），等待反馈播放完成")]
         [SerializeField] private float _stepTransitionDelay = 0.5f;
+        [Tooltip("当前配方 ID（T8 熟练度记录用，空则不记录）")]
+        [SerializeField] private string _recipeId = "";
 
         private IEventBus _eventBus;
         private AdaptiveDifficulty _adaptive;
@@ -145,6 +147,7 @@ namespace PastryWorld.Craft
 
             _eventBus.Publish(new CraftFlowCompletedEvent
             {
+                recipeId = _recipeId,
                 overallQuality = overall,
                 allStepsSuccess = allSuccess,
                 totalSteps = _steps.Length,
