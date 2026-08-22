@@ -1,12 +1,13 @@
 using UnityEngine;
 using PastryWorld.Input;
 using PastryWorld.Core;
+using PastryWorld.Craft.Dough;
 
 namespace PastryWorld.Craft
 {
     /// <summary>
     /// 揉面工艺步骤。玩家画圆圈揉面，累计角度判定。
-    /// 技术预判报告 T1。
+    /// T1 工艺架构 + T3 面团物理集成。
     /// </summary>
     public class CraftStep_Kneading : CraftStep
     {
@@ -17,6 +18,8 @@ namespace PastryWorld.Craft
 
         [Header("引用")]
         [SerializeField] private MonoBehaviour _inputProviderObj;
+        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private DoughController _doughController;
 
         private IInputProvider _input;
         private Vector2 _lastPos;
@@ -29,6 +32,8 @@ namespace PastryWorld.Craft
         {
             base.Awake();
             _input = _inputProviderObj as IInputProvider;
+            if (_mainCamera == null)
+                _mainCamera = Camera.main;
         }
 
         protected override void OnInputBegin()
@@ -36,6 +41,8 @@ namespace PastryWorld.Craft
             _accumulatedAngle = 0f;
             _hasLastPos = false;
             _hasCenter = false;
+            if (_doughController != null)
+                _doughController.ResetDough();
         }
 
         void Update()
@@ -66,6 +73,16 @@ namespace PastryWorld.Craft
                         if (Mathf.Abs(angleDelta) < 180f) // 过滤跳变
                         {
                             _accumulatedAngle += Mathf.Abs(angleDelta);
+                        }
+
+                        // T3: 推动面团形变
+                        if (_doughController != null && _mainCamera != null)
+                        {
+                            Vector2 worldPos = _mainCamera.ScreenToWorldPoint(currentPos);
+                            Vector2 worldDelta = (Vector2)_mainCamera.ScreenToWorldPoint(currentPos)
+                                - (Vector2)_mainCamera.ScreenToWorldPoint(_lastPos);
+                            _doughController.OnKneadDrag(worldPos, worldDelta);
+                            _doughController.UpdateKneadProgress(AccumulatedCircles);
                         }
                     }
                 }
