@@ -1,12 +1,13 @@
 using UnityEngine;
 using PastryWorld.Input;
 using PastryWorld.Core;
+using PastryWorld.Craft.Dough;
 
 namespace PastryWorld.Craft
 {
     /// <summary>
     /// 蒸制工艺步骤。玩家等待蒸制，在恰当时机按键完成。
-    /// 技术预判报告 T1。蒸制着色器在 T3 实现。
+    /// T1 工艺架构 + T3 蒸制着色器/蒸汽粒子集成。
     /// </summary>
     public class CraftStep_Steaming : CraftStep
     {
@@ -18,7 +19,8 @@ namespace PastryWorld.Craft
 
         [Header("引用")]
         [SerializeField] private MonoBehaviour _inputProviderObj;
-        [SerializeField] private SpriteRenderer _steamRenderer; // 蒸汽可视化
+        [SerializeField] private SpriteRenderer _steamRenderer; // 蒸汽可视化（旧版兼容）
+        [SerializeField] private DoughController _doughController; // T3 面团控制器
 
         private IInputProvider _input;
         private float _elapsedTime;
@@ -32,6 +34,8 @@ namespace PastryWorld.Craft
         protected override void OnInputBegin()
         {
             _elapsedTime = 0f;
+            if (_doughController != null)
+                _doughController.StartSteaming();
         }
 
         void Update()
@@ -40,13 +44,20 @@ namespace PastryWorld.Craft
 
             _elapsedTime += Time.deltaTime;
 
-            // 蒸汽效果（简化：随时间变透明度）
+            // 蒸汽效果（旧版兼容：SpriteRenderer 透明度）
             if (_steamRenderer != null)
             {
                 float t = Mathf.Clamp01(_elapsedTime / _optimalTime);
                 var color = _steamRenderer.color;
                 color.a = t * 0.8f;
                 _steamRenderer.color = color;
+            }
+
+            // T3: 面团蒸制进度（着色器颜色渐变 + 蒸汽粒子）
+            if (_doughController != null)
+            {
+                float cookProgress = Mathf.Clamp01(_elapsedTime / _optimalTime);
+                _doughController.UpdateCookProgress(cookProgress);
             }
 
             // 玩家按键确认完成
@@ -87,6 +98,13 @@ namespace PastryWorld.Craft
             if (_feedbackController != null)
                 _feedbackController.PlayFeedback(quality, success);
 
+            // T3: 蒸制完成，播放弹性回弹 + 颜色定格
+            if (_doughController != null)
+            {
+                float finalProgress = success ? Mathf.Clamp01(_elapsedTime / _optimalTime) : 1f;
+                _doughController.FinishSteaming(finalProgress);
+            }
+
             Debug.Log($"[Steaming] 时间={_elapsedTime:F1}s 最佳={_optimalTime:F1}s " +
                       $"品质={quality:F2} {(success ? "成功" : "失败")}");
 
@@ -102,6 +120,10 @@ namespace PastryWorld.Craft
                 var color = _steamRenderer.color;
                 color.a = 0f;
                 _steamRenderer.color = color;
+            }
+            if (_doughController != null)
+            {
+                _doughController.ResetDough();
             }
         }
 
