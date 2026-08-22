@@ -22,7 +22,6 @@ namespace PastryWorld.Craft
 
         private IInputProvider _input;
         private float _elapsedTime;
-        private bool _completed;
 
         protected override void Awake()
         {
@@ -33,7 +32,6 @@ namespace PastryWorld.Craft
         protected override void OnInputBegin()
         {
             _elapsedTime = 0f;
-            _completed = false;
         }
 
         void Update()
@@ -54,7 +52,6 @@ namespace PastryWorld.Craft
             // 玩家按键确认完成
             if (_requireButton && _input != null && _input.WasPressedThisFrame)
             {
-                _completed = true;
                 SubmitEvaluation();
                 return;
             }
@@ -62,7 +59,6 @@ namespace PastryWorld.Craft
             // 超时自动判定
             if (_elapsedTime >= _maxTime)
             {
-                _completed = true;
                 SubmitEvaluation();
                 return;
             }
@@ -70,7 +66,6 @@ namespace PastryWorld.Craft
             // 非按键模式：到达最佳时间自动完成
             if (!_requireButton && _elapsedTime >= _optimalTime)
             {
-                _completed = true;
                 SubmitEvaluation();
             }
         }
@@ -102,7 +97,6 @@ namespace PastryWorld.Craft
         {
             base.ResetStep();
             _elapsedTime = 0f;
-            _completed = false;
             if (_steamRenderer != null)
             {
                 var color = _steamRenderer.color;

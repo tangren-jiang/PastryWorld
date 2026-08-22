@@ -21,6 +21,7 @@ namespace PastryWorld.Craft
         private IInputProvider _input;
         private int _currentSlotIndex = 0;
         private int _placedCount = 0;
+        private bool _waitingForRelease; // 防止同一拖拽连续吸附多个槽位
 
         protected override void Awake()
         {
@@ -32,6 +33,7 @@ namespace PastryWorld.Craft
         {
             _currentSlotIndex = 0;
             _placedCount = 0;
+            _waitingForRelease = false;
         }
 
         void Update()
@@ -48,6 +50,9 @@ namespace PastryWorld.Craft
             // 玩家拖拽中
             if (_input.IsPressed)
             {
+                // 上一次吸附后需要松手才能吸附下一个
+                if (_waitingForRelease) return;
+
                 Vector2 worldPos = GetWorldPosition(_input.PointerPosition);
                 Transform target = _targetSlots[_currentSlotIndex];
 
@@ -57,6 +62,7 @@ namespace PastryWorld.Craft
                     // 吸附到目标
                     _placedCount++;
                     _currentSlotIndex++;
+                    _waitingForRelease = true;
 
                     if (_currentSlotIndex >= _targetSlots.Length)
                     {
@@ -64,10 +70,9 @@ namespace PastryWorld.Craft
                     }
                 }
             }
-            else if (_input.WasReleasedThisFrame && _placedCount > 0)
+            else if (_input.WasReleasedThisFrame)
             {
-                // 如果还没放完就松手，也算一次评估
-                // 简化：只看放置比例
+                _waitingForRelease = false;
             }
         }
 
@@ -108,6 +113,7 @@ namespace PastryWorld.Craft
             base.ResetStep();
             _currentSlotIndex = 0;
             _placedCount = 0;
+            _waitingForRelease = false;
         }
 
         public int PlacedCount => _placedCount;

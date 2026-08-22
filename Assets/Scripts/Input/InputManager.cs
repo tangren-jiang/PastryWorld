@@ -20,6 +20,9 @@ namespace PastryWorld.Input
         private IInputProvider _activeProvider;
         private InputDevice _lastDevice;
 
+        // 线程安全：onEvent 可能在非主线程调用，排队到 Update 处理
+        private volatile int _pendingDeviceType; // 0=None, 1=Mouse, 2=Touch, 3=Gamepad
+
         public IInputProvider ActiveProvider => _activeProvider;
 
         void Awake()
@@ -53,14 +56,30 @@ namespace PastryWorld.Input
                 SetActiveProvider(_touchProvider);
         }
 
+        void Update()
+        {
+            // 在主线程处理排队的设备切换
+            if (_pendingDeviceType != 0)
+            {
+                switch (_pendingDeviceType)
+                {
+                    case 1: SetActiveProvider(_mouseProvider); break;
+                    case 2: SetActiveProvider(_touchProvider); break;
+                    case 3: SetActiveProvider(_gamepadProvider); break;
+                }
+                _pendingDeviceType = 0;
+            }
+        }
+
         private void OnInputEvent(InputEventPtr eventPtr, InputDevice device)
         {
+            // 注意：此回调可能在非主线程调用，只做轻量的排队操作
             if (device is Mouse)
-                SetActiveProvider(_mouseProvider);
+                _pendingDeviceType = 1;
             else if (device is Touchscreen)
-                SetActiveProvider(_touchProvider);
+                _pendingDeviceType = 2;
             else if (device is Gamepad)
-                SetActiveProvider(_gamepadProvider);
+                _pendingDeviceType = 3;
         }
 
         private void SetActiveProvider(IInputProvider provider)

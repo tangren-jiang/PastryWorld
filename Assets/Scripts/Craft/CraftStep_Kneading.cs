@@ -20,8 +20,10 @@ namespace PastryWorld.Craft
 
         private IInputProvider _input;
         private Vector2 _lastPos;
+        private Vector2 _centerPos;
         private float _accumulatedAngle;
         private bool _hasLastPos;
+        private bool _hasCenter;
 
         protected override void Awake()
         {
@@ -33,6 +35,7 @@ namespace PastryWorld.Craft
         {
             _accumulatedAngle = 0f;
             _hasLastPos = false;
+            _hasCenter = false;
         }
 
         void Update()
@@ -44,10 +47,19 @@ namespace PastryWorld.Craft
             {
                 Vector2 currentPos = _input.PointerPosition;
 
+                // 首次按下时记录圆心位置
+                if (!_hasCenter)
+                {
+                    _centerPos = currentPos;
+                    _hasCenter = true;
+                }
+
                 if (_hasLastPos)
                 {
                     Vector2 delta = currentPos - _lastPos;
-                    if (delta.magnitude > 1f)
+                    // 过滤过小位移和离圆心太近的点（抖动不算）
+                    float distFromCenter = (currentPos - GetCenter()).magnitude;
+                    if (delta.magnitude > 1f && distFromCenter >= _minRadius)
                     {
                         // 累计角度（基于位移方向变化）
                         float angleDelta = Vector2.SignedAngle(_lastPos - GetCenter(), currentPos - GetCenter());
@@ -69,9 +81,8 @@ namespace PastryWorld.Craft
 
         private Vector2 GetCenter()
         {
-            // 揉面中心：用按下时的位置作为圆心
-            // 简化方案：屏幕中心
-            return new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+            // 使用玩家首次按下位置作为揉面圆心
+            return _centerPos;
         }
 
         protected override float Evaluate()
@@ -107,6 +118,7 @@ namespace PastryWorld.Craft
             base.ResetStep();
             _accumulatedAngle = 0f;
             _hasLastPos = false;
+            _hasCenter = false;
         }
 
         public float AccumulatedCircles => _accumulatedAngle / _anglePerUnit;

@@ -13,6 +13,8 @@ namespace PastryWorld.Craft
         [Header("制作步骤")]
         [SerializeField] private CraftStep[] _steps;
         [SerializeField] private bool _autoStart = false;
+        [Tooltip("步骤间延迟（秒），等待反馈播放完成")]
+        [SerializeField] private float _stepTransitionDelay = 0.5f;
 
         private IEventBus _eventBus;
         private int _currentIndex = -1;
@@ -25,7 +27,7 @@ namespace PastryWorld.Craft
 
         void Awake()
         {
-            _eventBus = new EventBus();
+            _eventBus = PastryWorld.Core.EventBus.Default;
         }
 
         void Start()
@@ -115,9 +117,13 @@ namespace PastryWorld.Craft
                 success = step.LastResultSuccess
             });
 
-            // 延迟一小段后前进（等反馈播放完）
-            // 简化版：立即前进。实际需等反馈动画完成。
-            // TODO: 配合反馈时长等待
+            // 延迟前进，等待反馈动画播放完成
+            StartCoroutine(DelayedAdvance(_stepTransitionDelay));
+        }
+
+        private System.Collections.IEnumerator DelayedAdvance(float delay)
+        {
+            yield return new UnityEngine.WaitForSeconds(delay);
             AdvanceToNext();
         }
 

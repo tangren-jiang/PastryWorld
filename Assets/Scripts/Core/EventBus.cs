@@ -20,6 +20,21 @@ namespace PastryWorld.Core
     {
         private readonly Dictionary<Type, object> _handlers = new();
 
+        /// <summary>
+        /// 全局共享实例。所有模块使用同一实例实现跨模块通信。
+        /// 场景切换时调用 ResetDefault() 清理。
+        /// </summary>
+        private static EventBus _default;
+        public static EventBus Default
+        {
+            get { return _default ??= new EventBus(); }
+        }
+
+        /// <summary>
+        /// 清理全局实例（场景切换时调用）。
+        /// </summary>
+        public static void ResetDefault() { _default = null; }
+
         public void Subscribe<TEvent>(Action<TEvent> handler) where TEvent : struct
         {
             if (handler == null) return;

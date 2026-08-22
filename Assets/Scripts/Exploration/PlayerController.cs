@@ -89,6 +89,14 @@ namespace PastryWorld.Exploration
             }
         }
 
+        void Update()
+        {
+            if (TryInteract(out var interactable))
+            {
+                interactable.OnInteract();
+            }
+        }
+
         /// <summary>
         /// 尝试交互。返回是否命中可交互对象。
         /// </summary>

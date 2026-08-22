@@ -164,8 +164,8 @@ namespace PastryWorld.Narrative
 
         private static IEventBus FindEventBus()
         {
-            // 临时：创建独立实例。后续 W6 集成时由 BootstrapLoader 统一注入。
-            return new EventBus();
+            // 使用全局共享实例，确保与 CraftManager 等模块通信
+            return EventBus.Default;
         }
     }
 }
