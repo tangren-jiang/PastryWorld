@@ -1,3 +1,4 @@
+using PastryWorld.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -94,6 +95,15 @@ namespace PastryWorld.Exploration
             if (TryInteract(out var interactable))
             {
                 interactable.OnInteract();
+
+                // T10 弱引导：有效交互重置引导计时器
+                EventBus.Default.Publish(new PlayerInteractedEvent
+                {
+                    position = _rb.position,
+                    targetName = (interactable as MonoBehaviour) != null
+                        ? ((MonoBehaviour)interactable).name
+                        : "Unknown"
+                });
             }
         }
 
