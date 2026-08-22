@@ -105,8 +105,9 @@ namespace PastryWorld.Craft.Editor
             // (CraftStep.Awake 会 GetComponent 获取)
             so.ApplyModifiedProperties();
 
-            // CraftManager
+            // CraftManager + AdaptiveDifficulty（T7 失败自适应，纯后台）
             var mgrObj = new GameObject("CraftManager");
+            mgrObj.AddComponent<AdaptiveDifficulty>();
             var mgr = mgrObj.AddComponent<CraftManager>();
             var mgrSO = new SerializedObject(mgr);
             var stepsProp = mgrSO.FindProperty("_steps");

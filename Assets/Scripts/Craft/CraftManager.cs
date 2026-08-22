@@ -17,6 +17,7 @@ namespace PastryWorld.Craft
         [SerializeField] private float _stepTransitionDelay = 0.5f;
 
         private IEventBus _eventBus;
+        private AdaptiveDifficulty _adaptive;
         private int _currentIndex = -1;
         private readonly List<float> _qualityScores = new();
         private int _successCount = 0;
@@ -24,10 +25,12 @@ namespace PastryWorld.Craft
         public int CurrentIndex => _currentIndex;
         public int TotalSteps => _steps != null ? _steps.Length : 0;
         public bool IsRunning { get; private set; }
+        public AdaptiveDifficulty Adaptive => _adaptive;
 
         void Awake()
         {
             _eventBus = PastryWorld.Core.EventBus.Default;
+            _adaptive = FindObjectOfType<AdaptiveDifficulty>();
         }
 
         void Start()
@@ -56,6 +59,9 @@ namespace PastryWorld.Craft
             _currentIndex = -1;
             _qualityScores.Clear();
             _successCount = 0;
+
+            // T7：重置自适应难度（新一轮制作从基础容错开始）
+            if (_adaptive != null) _adaptive.ResetState();
 
             // 重置所有步骤
             foreach (var step in _steps)
@@ -109,6 +115,9 @@ namespace PastryWorld.Craft
 
             _qualityScores.Add(quality);
             if (step.LastResultSuccess) _successCount++;
+
+            // T7：反馈结果给自适应难度（静默调整后续容错）
+            if (_adaptive != null) _adaptive.OnStepResult(quality);
 
             _eventBus.Publish(new CraftStepCompletedEvent
             {

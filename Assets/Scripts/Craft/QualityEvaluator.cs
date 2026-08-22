@@ -18,16 +18,45 @@ namespace PastryWorld.Craft
         [Tooltip("降采样上限（性能优化）")]
         [SerializeField] private int _maxSamples = 64;
 
+        [Header("T7 自适应难度")]
+        [Tooltip("自适应难度组件（为空时自动查找场景中的 AdaptiveDifficulty）")]
+        [SerializeField] private AdaptiveDifficulty _adaptive;
+        [Tooltip("容错扩大时的分数上限——锁定'完美'档（90+）不被自适应影响")]
+        [SerializeField, Range(0.5f, 1f)] private float _adaptiveScoreCap = 0.9f;
+
+        private void Awake()
+        {
+            if (_adaptive == null)
+                _adaptive = FindObjectOfType<AdaptiveDifficulty>();
+        }
+
+        /// <summary>
+        /// 注入自适应难度组件（测试或显式装配用）。
+        /// </summary>
+        public void SetAdaptive(AdaptiveDifficulty adaptive)
+        {
+            _adaptive = adaptive;
+        }
+
         /// <summary>
         /// 评估数值型输入（称量/蒸制等）。
+        /// T7：应用自适应容错。规范：容错扩大只在"良好"档以下生效——
+        /// 提分封顶于 _adaptiveScoreCap（不进入完美档），但不压低原有完美分数。
         /// </summary>
         public virtual float Evaluate(float actualValue, float targetValue, float tolerance)
         {
             if (tolerance <= 0f) return 1f;
 
             float diff = Mathf.Abs(actualValue - targetValue);
-            float score = 1f - (diff / tolerance);
-            return Mathf.Clamp01(score);
+            float baseScore = Mathf.Clamp01(1f - diff / tolerance);
+
+            if (_adaptive == null) return baseScore;
+
+            float effectiveTolerance = _adaptive.ApplyTolerance(tolerance);
+            if (effectiveTolerance <= tolerance) return baseScore;
+
+            float expandedScore = Mathf.Clamp01(1f - diff / effectiveTolerance);
+            return Mathf.Min(expandedScore, Mathf.Max(baseScore, _adaptiveScoreCap));
         }
 
         /// <summary>
@@ -56,7 +85,7 @@ namespace PastryWorld.Craft
             float distance = FrechetDistance.CalculateFast(
                 playerTrajectory, idealTrajectory, _maxSamples);
 
-            return FrechetDistance.DistanceToScore(distance, _maxAllowableDistance);
+            return EvaluateDistanceScore(distance, _maxAllowableDistance);
         }
 
         /// <summary>
@@ -76,7 +105,26 @@ namespace PastryWorld.Craft
             float distance = FrechetDistance.CalculateFast(
                 normalizedPlayer, normalizedIdeal, _maxSamples);
 
-            return FrechetDistance.DistanceToScore(distance, _maxAllowableDistance);
+            return EvaluateDistanceScore(distance, _maxAllowableDistance);
+        }
+
+        /// <summary>
+        /// 距离 → 分数，应用 T7 自适应容错。
+        /// 提分封顶于 _adaptiveScoreCap（不进入完美档），但不压低原有完美分数。
+        /// </summary>
+        private float EvaluateDistanceScore(float distance, float baseMaxDistance)
+        {
+            if (baseMaxDistance <= 0f) return 0f;
+
+            float baseScore = FrechetDistance.DistanceToScore(distance, baseMaxDistance);
+
+            if (_adaptive == null) return baseScore;
+
+            float maxDistance = _adaptive.ApplyTolerance(baseMaxDistance);
+            if (maxDistance <= baseMaxDistance) return baseScore;
+
+            float expandedScore = FrechetDistance.DistanceToScore(distance, maxDistance);
+            return Mathf.Min(expandedScore, Mathf.Max(baseScore, _adaptiveScoreCap));
         }
 
         /// <summary>
