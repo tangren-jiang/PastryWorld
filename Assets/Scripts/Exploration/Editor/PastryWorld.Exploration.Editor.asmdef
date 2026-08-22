@@ -1,8 +1,8 @@
 {
-    "name": "PastryWorld.Exploration",
-    "rootNamespace": "PastryWorld.Exploration",
-    "references": ["PastryWorld.Core", "PastryWorld.Input", "Unity.InputSystem"],
-    "includePlatforms": [],
+    "name": "PastryWorld.Exploration.Editor",
+    "rootNamespace": "PastryWorld.Exploration.Editor",
+    "references": ["PastryWorld.Exploration", "PastryWorld.Input", "Unity.InputSystem"],
+    "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
