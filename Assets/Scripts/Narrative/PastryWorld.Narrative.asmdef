@@ -1,7 +1,7 @@
 {
     "name": "PastryWorld.Narrative",
     "rootNamespace": "PastryWorld.Narrative",
-    "references": ["PastryWorld.Core", "PastryWorld.Input"],
+    "references": ["PastryWorld.Core", "PastryWorld.Input", "PastryWorld.Exploration", "Unity.TextMeshPro", "Unity.InputSystem"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
