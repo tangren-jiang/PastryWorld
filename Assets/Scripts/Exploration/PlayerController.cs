@@ -29,6 +29,11 @@ namespace PastryWorld.Exploration
         public Vector2 Facing => _facing;
         public float MoveSpeed => _moveSpeed;
 
+        /// <summary>
+        /// 输入锁（对话 T14 / 记忆全屏 T15 等系统锁定玩家移动与交互）。
+        /// </summary>
+        public bool InputLocked { get; set; }
+
         void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -70,7 +75,7 @@ namespace PastryWorld.Exploration
 
         void FixedUpdate()
         {
-            if (_moveAction == null) return;
+            if (_moveAction == null || InputLocked) return;
 
             Vector2 input = _moveAction.ReadValue<Vector2>();
             if (input.sqrMagnitude > 0.01f)
@@ -92,6 +97,8 @@ namespace PastryWorld.Exploration
 
         void Update()
         {
+            if (InputLocked) return;
+
             if (TryInteract(out var interactable))
             {
                 interactable.OnInteract();

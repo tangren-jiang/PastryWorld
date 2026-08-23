@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7d2d22c63ce4587a03cf206bda14de, type: 3}
+  m_Name: Dialogue_HoneyWitch
+  m_EditorClassIdentifier: 
+  dialogueId: honey_witch_talk
+  startNodeId: n1
+  nodes:
+  - nodeId: n1
+    speakerName: "\u8702\u871C\u5A46\u5A46"
+    text: "\u54DF\uFF0C\u5C0F\u5BB6\u4F19\uFF0C\u4F60\u6765\u5566\u3002\u4ECA\u5929\u7684\u8702\u871C\u6D82\u679C\u5E72\uFF0C\u505A\u5F97\u600E\u4E48\u6837\u4E86\uFF1F"
+    portrait: {fileID: 21300000, guid: 24d7680e6587747deadfb813e6dcebf7, type: 3}
+    portraitExpr: 
+    choices:
+    - text: "\u95EE\u95EE\u8702\u871C\u7684\u8BB2\u7A76"
+      nextNodeId: n2
+    - text: 
+      nextNodeId: n4
+    nextNodeId: 
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: 
+  - nodeId: n2
+    speakerName: "\u8702\u871C\u5A46\u5A46"
+    text: "\u8702\u871C\u8981\u8D81\u6E29\u70ED\u7684\u65F6\u5019\u6D82\u3002\u679C\u5E72\u7684\u9178\uFF0C\u5F97\u8BA9\u751C\u5305\u7740\uFF0C\u624D\u538B\u5F97\u4F4F\u3002"
+    portrait: {fileID: 21300000, guid: 24d7680e6587747deadfb813e6dcebf7, type: 3}
+    portraitExpr: 
+    choices: []
+    nextNodeId: n4
+    giftPastryId: honey_fruit
+    giftResponseNodeId: n3
+    envTrigger: 
+  - nodeId: n3
+    speakerName: "\u8702\u871C\u5A46\u5A46"
+    text: "\u2026\u2026\u8FD9\u662F\uFF0C\u6211\u8BB0\u5FC6\u91CC\u7684\u5473\u9053\u3002\u8C22\u8C22\u4F60\uFF0C\u5B69\u5B50\u3002"
+    portrait: {fileID: 21300000, guid: 24d7680e6587747deadfb813e6dcebf7, type: 3}
+    portraitExpr: 
+    choices: []
+    nextNodeId: n4
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: light_warm
+  - nodeId: n4
+    speakerName: "\u8702\u871C\u5A46\u5A46"
+    text: "\u53BB\u5427\uFF0C\u6842\u82B1\u5DF7\u7684\u4E91\u7247\u5148\u751F\uFF0C\u8FD8\u7B49\u7740\u4F60\u5462\u3002"
+    portrait: {fileID: 21300000, guid: 24d7680e6587747deadfb813e6dcebf7, type: 3}
+    portraitExpr: 
+    choices: []
+    nextNodeId: 
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: 

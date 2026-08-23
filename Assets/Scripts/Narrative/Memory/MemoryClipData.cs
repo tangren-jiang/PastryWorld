@@ -51,6 +51,9 @@ namespace PastryWorld.Narrative
         [Tooltip("可选的音效/音乐片段")]
         public AudioClip audioClip;
 
+        [Tooltip("全屏模式（T15）BGM 切换。播放期间切换到此 BGM，结束后恢复原 BGM")]
+        public AudioClip bgmClip;
+
         /// <summary>帧序列总时长（秒）。无帧时返回 0。</summary>
         public float Duration => frames != null && frames.Length > 0 && fps > 0f
             ? frames.Length / fps
