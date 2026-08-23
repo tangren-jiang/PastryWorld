@@ -17,15 +17,22 @@ namespace PastryWorld.Craft
         [SerializeField] private float _stepTransitionDelay = 0.5f;
         [Tooltip("当前配方 ID（T8 熟练度记录用，空则不记录）")]
         [SerializeField] private string _recipeId = "";
+        [Tooltip("迷你制作模式（T19）：只执行标记为 IsMiniStep 的关键步骤")]
+        [SerializeField] private bool _miniCraftMode = false;
 
         private IEventBus _eventBus;
         private AdaptiveDifficulty _adaptive;
         private int _currentIndex = -1;
         private readonly List<float> _qualityScores = new();
+        private readonly List<CraftStep> _pipeline = new();
         private int _successCount = 0;
 
         public int CurrentIndex => _currentIndex;
         public int TotalSteps => _steps != null ? _steps.Length : 0;
+        /// <summary>本轮实际执行的步骤数（迷你模式下少于 TotalSteps）。</summary>
+        public int ExecutedStepCount => _pipeline.Count;
+        /// <summary>迷你制作模式（T19）。</summary>
+        public bool MiniCraftMode => _miniCraftMode;
         public bool IsRunning { get; private set; }
         public AdaptiveDifficulty Adaptive => _adaptive;
 
@@ -62,6 +69,9 @@ namespace PastryWorld.Craft
             _qualityScores.Clear();
             _successCount = 0;
 
+            // T19：迷你模式过滤——只执行标记为 IsMiniStep 的关键步骤
+            BuildPipeline();
+
             // T7：重置自适应难度（新一轮制作从基础容错开始）
             if (_adaptive != null) _adaptive.ResetState();
 
@@ -74,6 +84,45 @@ namespace PastryWorld.Craft
             AdvanceToNext();
         }
 
+        /// <summary>启动迷你制作流程（T19）：只执行关键步骤。</summary>
+        public void StartMiniCraft()
+        {
+            _miniCraftMode = true;
+            StartCraft();
+        }
+
+        /// <summary>启动完整制作流程（T19）。</summary>
+        public void StartFullCraft()
+        {
+            _miniCraftMode = false;
+            StartCraft();
+        }
+
+        private void BuildPipeline()
+        {
+            _pipeline.Clear();
+            foreach (var step in _steps)
+            {
+                if (step == null) continue;
+                if (_miniCraftMode && !step.IsMiniStep) continue;
+                _pipeline.Add(step);
+            }
+
+            // 兜底：迷你模式下没有任何标记步骤 → 回退完整流程
+            if (_pipeline.Count == 0)
+            {
+                Debug.LogWarning("[CraftManager] 迷你模式无标记步骤，回退完整流程");
+                foreach (var step in _steps)
+                {
+                    if (step != null) _pipeline.Add(step);
+                }
+            }
+
+            if (_miniCraftMode)
+                Debug.Log($"[CraftManager] 迷你模式: {_pipeline.Count}/{_steps.Length} 步 " +
+                          $"[{string.Join(" → ", _pipeline.ConvertAll(s => s.StepId))}]");
+        }
+
         /// <summary>
         /// 前进到下一步骤。
         /// </summary>
@@ -83,13 +132,13 @@ namespace PastryWorld.Craft
 
             _currentIndex++;
 
-            if (_currentIndex >= _steps.Length)
+            if (_currentIndex >= _pipeline.Count)
             {
                 CompleteCraft();
                 return;
             }
 
-            var step = _steps[_currentIndex];
+            var step = _pipeline[_currentIndex];
             if (step == null)
             {
                 Debug.LogError($"[CraftManager] 步骤 {_currentIndex} 为空");
@@ -143,18 +192,19 @@ namespace PastryWorld.Craft
             IsRunning = false;
 
             float overall = CalculateOverallQuality();
-            bool allSuccess = _successCount == _steps.Length;
+            bool allSuccess = _successCount == _pipeline.Count;
 
             _eventBus.Publish(new CraftFlowCompletedEvent
             {
                 recipeId = _recipeId,
                 overallQuality = overall,
                 allStepsSuccess = allSuccess,
-                totalSteps = _steps.Length,
+                totalSteps = _pipeline.Count,
                 successSteps = _successCount
             });
 
-            Debug.Log($"[CraftManager] 制作完成: 总品质={overall:F2}, 成功 {_successCount}/{_steps.Length}");
+            Debug.Log($"[CraftManager] 制作完成{(_miniCraftMode ? "（迷你）" : "")}: " +
+                      $"总品质={overall:F2}, 成功 {_successCount}/{_pipeline.Count}");
         }
 
         private float CalculateOverallQuality()
@@ -165,9 +215,9 @@ namespace PastryWorld.Craft
             float totalWeight = 0f;
             float weightedSum = 0f;
 
-            for (int i = 0; i < _qualityScores.Count && i < _steps.Length; i++)
+            for (int i = 0; i < _qualityScores.Count && i < _pipeline.Count; i++)
             {
-                float weight = _steps[i].Config != null ? _steps[i].Config.qualityWeight : 1f;
+                float weight = _pipeline[i].Config != null ? _pipeline[i].Config.qualityWeight : 1f;
                 weightedSum += _qualityScores[i] * weight;
                 totalWeight += weight;
             }
