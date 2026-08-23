@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505e6733f0a14400a9bb094c6c881971, type: 3}
+  m_Name: CodexEntry_pastry_honey_fruit
+  m_EditorClassIdentifier: 
+  entryId: pastry_honey_fruit
+  displayName: "\u8702\u871C\u6D82\u679C\u5E72"
+  category: 1
+  description: "\u8584\u8584\u7684\u679C\u5E72\u88F9\u4E0A\u4E00\u5C42\u91CE\u871C\uFF0C\u6652\u8DB3\u4E86\u592A\u9633\u3002\u751C\u5473\u4E0D\u6025\uFF0C\u4E00\u5C42\u4E00\u5C42\u6162\u6162\u5316\u5F00\u3002"
+  illustration: {fileID: 0}
+  unlockSource: 1
+  sourceId: recipe_honey_fruit
+  startUnlocked: 0
+  relatedEntryIds:
+  - ing_honey
+  - ing_dried_fruit

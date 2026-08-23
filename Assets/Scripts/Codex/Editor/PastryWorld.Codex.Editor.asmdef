@@ -1,0 +1,14 @@
+{
+    "name": "PastryWorld.Codex.Editor",
+    "rootNamespace": "PastryWorld.Codex.Editor",
+    "references": ["PastryWorld.Codex"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

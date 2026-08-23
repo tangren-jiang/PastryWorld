@@ -1,7 +1,7 @@
 {
     "name": "PastryWorld.Codex",
     "rootNamespace": "PastryWorld.Codex",
-    "references": ["PastryWorld.Core", "PastryWorld.Input"],
+    "references": ["PastryWorld.Core", "PastryWorld.Input", "PastryWorld.Craft", "PastryWorld.Narrative", "PastryWorld.Exploration", "Unity.TextMeshPro", "Unity.InputSystem"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

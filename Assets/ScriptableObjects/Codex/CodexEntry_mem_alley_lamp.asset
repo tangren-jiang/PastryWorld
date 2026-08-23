@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505e6733f0a14400a9bb094c6c881971, type: 3}
+  m_Name: CodexEntry_mem_alley_lamp
+  m_EditorClassIdentifier: 
+  entryId: mem_alley_lamp
+  displayName: "\u96E8\u5DF7\u7684\u706F"
+  category: 4
+  description: "\u90A3\u665A\u96E8\u5F88\u5927\uFF0C\u5DF7\u5C3E\u7684\u706F\u628A\u6E7F\u9752\u77F3\u677F\u7167\u51FA\u4E00\u6761\u4EAE\u4EAE\u7684\u8DEF\u3002"
+  illustration: {fileID: 0}
+  unlockSource: 3
+  sourceId: D2
+  startUnlocked: 0
+  relatedEntryIds:
+  - place_rain_alley

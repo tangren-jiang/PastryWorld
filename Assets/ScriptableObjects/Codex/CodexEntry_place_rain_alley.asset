@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505e6733f0a14400a9bb094c6c881971, type: 3}
+  m_Name: CodexEntry_place_rain_alley
+  m_EditorClassIdentifier: 
+  entryId: place_rain_alley
+  displayName: "\u6C5F\u5357\u70DF\u96E8\u5DF7"
+  category: 0
+  description: "\u9752\u77F3\u677F\u8DEF\u7684\u7A84\u5DF7\uFF0C\u96E8\u4E0B\u8D77\u6765\u5C31\u6CA1\u5B8C\u3002\u5DF7\u5C3E\u7684\u706F\u603B\u4EAE\u5230\u5F88\u665A\uFF0C\u50CF\u5728\u7B49\u8C01\u56DE\u5BB6\u3002"
+  illustration: {fileID: 0}
+  unlockSource: 3
+  sourceId: D1
+  startUnlocked: 0
+  relatedEntryIds:
+  - char_mr_cloud
+  - ing_rice_flour

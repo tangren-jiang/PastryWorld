@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 505e6733f0a14400a9bb094c6c881971, type: 3}
+  m_Name: CodexEntry_ing_honey
+  m_EditorClassIdentifier: 
+  entryId: ing_honey
+  displayName: "\u91CE\u871C"
+  category: 2
+  description: "\u8702\u871C\u5A46\u5A46\u4EB2\u624B\u6536\u7684\u91CE\u871C\u3002\u989C\u8272\u6BD4\u5E38\u89C1\u7684\u6DF1\u4E00\u4E9B\uFF0C\u88C5\u5728\u7C97\u9676\u7F50\u91CC\u3002"
+  illustration: {fileID: 0}
+  unlockSource: 2
+  sourceId: honey_fruit
+  startUnlocked: 0
+  relatedEntryIds:
+  - char_granny
