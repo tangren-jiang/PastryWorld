@@ -1,0 +1,22 @@
+{
+    "name": "PastryWorld.Integration",
+    "rootNamespace": "PastryWorld.Integration",
+    "references": [
+        "PastryWorld.Core",
+        "PastryWorld.Craft",
+        "PastryWorld.Narrative",
+        "PastryWorld.Exploration",
+        "PastryWorld.Reality",
+        "PastryWorld.Codex",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

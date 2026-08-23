@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bef8d80693da4a65b27452de0179e4f, type: 3}
+  m_Name: SC_W6_Heat
+  m_EditorClassIdentifier: 
+  stepId: step_heat
+  displayName: "\u52A0\u70ED"
+  description: "W6 \u96C6\u6210: \u52A0\u70ED"
+  targetValue: 2
+  tolerance: 1
+  passThreshold: 0.5
+  duration: 30
+  qualityWeight: 1
+  inputSensitivity: 1
+  minInput: 0.1

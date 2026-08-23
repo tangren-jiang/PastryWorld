@@ -1,0 +1,26 @@
+{
+    "name": "PastryWorld.Integration.Editor",
+    "rootNamespace": "PastryWorld.Integration.Editor",
+    "references": [
+        "PastryWorld.Core",
+        "PastryWorld.Craft",
+        "PastryWorld.Narrative",
+        "PastryWorld.Exploration",
+        "PastryWorld.Reality",
+        "PastryWorld.Codex",
+        "PastryWorld.Integration",
+        "Unity.InputSystem",
+        "Unity.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
