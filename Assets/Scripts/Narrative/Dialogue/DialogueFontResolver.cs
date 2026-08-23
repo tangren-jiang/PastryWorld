@@ -7,7 +7,7 @@ namespace PastryWorld.Narrative
     /// TMP 中文字体解析。TMP 默认字体（LiberationSans SDF）不含 CJK 字形，
     /// 运行时从系统字体动态创建 TMP_FontAsset（macOS: PingFang SC / Windows: 微软雅黑）。
     /// </summary>
-    internal static class DialogueFontResolver
+    public static class DialogueFontResolver
     {
         private static TMP_FontAsset _cached;
 

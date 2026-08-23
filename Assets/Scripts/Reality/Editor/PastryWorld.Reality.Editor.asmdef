@@ -1,0 +1,14 @@
+{
+    "name": "PastryWorld.Reality.Editor",
+    "rootNamespace": "PastryWorld.Reality.Editor",
+    "references": ["PastryWorld.Reality", "PastryWorld.Core", "PastryWorld.Narrative", "PastryWorld.Exploration", "Unity.InputSystem"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
