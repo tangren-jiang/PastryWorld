@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7d2d22c63ce4587a03cf206bda14de, type: 3}
+  m_Name: Dialogue_PhoneCall
+  m_EditorClassIdentifier: 
+  dialogueId: phone_call
+  startNodeId: n1
+  nodes:
+  - nodeId: n1
+    speakerName: "\u65E7\u7535\u8BDD"
+    text: "\uFF08\u94C3\u2014\u2014\u94C3\u2014\u2014\u94C3\u58F0\u5728\u7A7A\u5C4B\u91CC\u663E\u5F97\u5F88\u54CD\u3002\u542C\u7B52\u62FF\u8D77\u6765\uFF0C\u8FD8\u662F\u653E\u4E0B\uFF1F\uFF09"
+    portrait: {fileID: 0}
+    portraitExpr: 
+    choices:
+    - text: "\u63A5\u8D77\u7535\u8BDD"
+      nextNodeId: n2
+    - text: 
+      nextNodeId: n3
+    nextNodeId: 
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: 
+  - nodeId: n2
+    speakerName: "\u542C\u7B52"
+    text: "\u300C\u2026\u2026\u5582\uFF0C\u662F\u6211\u3002\u300D\u90A3\u5934\u7684\u58F0\u97F3\u987F\u4E86\u987F\uFF0C\u300C\u5F88\u4E45\u6CA1\u542C\u5230\u4F60\u505A\u70B9\u5FC3\u7684\u58F0\u97F3\u4E86\u3002\u300D"
+    portrait: {fileID: 0}
+    portraitExpr: 
+    choices: []
+    nextNodeId: 
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: 
+  - nodeId: n3
+    speakerName: "\u65E7\u7535\u8BDD"
+    text: "\uFF08\u94C3\u58F0\u505C\u4E86\u3002\u5C4B\u5B50\uFF0C\u597D\u50CF\u6BD4\u521A\u624D\u66F4\u9759\u4E86\u4E00\u70B9\u3002\uFF09"
+    portrait: {fileID: 0}
+    portraitExpr: 
+    choices: []
+    nextNodeId: 
+    giftPastryId: 
+    giftResponseNodeId: 
+    envTrigger: 

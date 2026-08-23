@@ -1,7 +1,7 @@
 {
     "name": "PastryWorld.Reality",
     "rootNamespace": "PastryWorld.Reality",
-    "references": ["PastryWorld.Core", "PastryWorld.Input", "PastryWorld.Narrative", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
+    "references": ["PastryWorld.Core", "PastryWorld.Input", "PastryWorld.Narrative", "PastryWorld.Exploration", "Unity.TextMeshPro", "Unity.InputSystem", "Unity.RenderPipelines.Core.Runtime", "Unity.RenderPipelines.Universal.Runtime"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
