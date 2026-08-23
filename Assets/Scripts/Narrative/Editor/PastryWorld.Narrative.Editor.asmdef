@@ -1,7 +1,7 @@
 {
     "name": "PastryWorld.Narrative.Editor",
     "rootNamespace": "PastryWorld.Narrative.Editor",
-    "references": ["PastryWorld.Narrative", "PastryWorld.Core"],
+    "references": ["PastryWorld.Narrative", "PastryWorld.Core", "PastryWorld.Exploration", "PastryWorld.Reality", "Unity.InputSystem"],
     "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
