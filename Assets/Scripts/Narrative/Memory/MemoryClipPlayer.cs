@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using PastryWorld.Core;
+using PastryWorld.Exploration;
 
 namespace PastryWorld.Narrative
 {
@@ -11,7 +12,8 @@ namespace PastryWorld.Narrative
     ///
     /// Overlay 模式（T6）：CanvasGroup.alpha=0.7，blocksRaycast=false（不拦截输入，
     /// 制作操作继续），层级在制作界面之上、暂停菜单之下。播完后淡出不中断制作。
-    /// Fullscreen 模式（T15）：alpha=1，blocksRaycast=true（锁输入），本框架预留。
+    /// Fullscreen 模式（T15）：alpha=1，blocksRaycast=true + 玩家输入锁（PlayerController.
+    /// InputLocked）+ BGM 切换（BgmController 交叉淡入淡出，播完恢复）。
     /// 技术预判报告 T6/T15。
     /// </summary>
     public class MemoryClipPlayer : MonoBehaviour
@@ -33,6 +35,10 @@ namespace PastryWorld.Narrative
         private Coroutine _playRoutine;
         private MemoryClipData _currentClip;
 
+        // T15 全屏模式状态
+        private PlayerController _lockedPlayer;
+        private AudioClip _previousBgm;
+
         /// <summary>当前正在播放的记忆片段。未播放时为 null。</summary>
         public MemoryClipData CurrentClip => _currentClip;
 
@@ -52,6 +58,7 @@ namespace PastryWorld.Narrative
                 StopCoroutine(_playRoutine);
                 _playRoutine = null;
             }
+            CleanupFullscreen(_currentClip);
         }
 
         /// <summary>
@@ -80,6 +87,8 @@ namespace PastryWorld.Narrative
                 _playRoutine = null;
             }
 
+            CleanupFullscreen(_currentClip);
+
             if (_currentClip != null)
             {
                 _currentClip = null;
@@ -100,6 +109,12 @@ namespace PastryWorld.Narrative
         {
             _currentClip = clip;
             BuildLayers(clip.playMode);
+
+            // T15 全屏模式：锁玩家输入 + BGM 切换
+            if (clip.playMode == MemoryPlayMode.Fullscreen)
+            {
+                BeginFullscreen(clip);
+            }
 
             float targetAlpha = clip.playMode == MemoryPlayMode.Overlay ? clip.overlayAlpha : 1f;
             _canvasGroup.alpha = 0f;
@@ -158,8 +173,46 @@ namespace PastryWorld.Narrative
                 playMode = clip.playMode
             });
 
+            // T15 全屏模式收尾：解锁输入 + 恢复原 BGM
+            CleanupFullscreen(clip);
+
             _currentClip = null;
             _playRoutine = null;
+        }
+
+        /// <summary>T15 全屏模式开场：锁玩家输入 + 切换 BGM（记录原 BGM 以便恢复）。</summary>
+        private void BeginFullscreen(MemoryClipData clip)
+        {
+            _lockedPlayer = FindFirstObjectByType<PlayerController>();
+            if (_lockedPlayer != null)
+                _lockedPlayer.InputLocked = true;
+
+            if (clip.bgmClip != null)
+            {
+                _previousBgm = BgmController.Instance.CurrentClip;
+                BgmController.Instance.Play(clip.bgmClip);
+            }
+        }
+
+        /// <summary>T15 全屏模式收尾：解锁玩家输入 + 恢复原 BGM。幂等，非全屏片段无操作。</summary>
+        private void CleanupFullscreen(MemoryClipData clip)
+        {
+            if (clip == null || clip.playMode != MemoryPlayMode.Fullscreen) return;
+
+            if (_lockedPlayer != null)
+            {
+                _lockedPlayer.InputLocked = false;
+                _lockedPlayer = null;
+            }
+
+            if (clip.bgmClip != null)
+            {
+                if (_previousBgm != null)
+                    BgmController.Instance.Play(_previousBgm);
+                else
+                    BgmController.Instance.Stop();
+                _previousBgm = null;
+            }
         }
 
         private IEnumerator FadeRoutine(float from, float to, float duration)
