@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PastryWorld.Core;
@@ -122,7 +123,9 @@ namespace PastryWorld.Narrative
             switch (beat.beatType)
             {
                 case BeatType.Transition:
-                    // 转场节拍：自动前进（实际转场由 T12 处理）
+                    // 转场节拍：发布事件（T12 等外部系统做转场表现）后自动推进。
+                    // 延迟到下一帧，避免在 BeatStartedEvent 发布调用栈内同步重入 Advance。
+                    StartCoroutine(AdvanceNextFrame());
                     break;
                 case BeatType.Action:
                     // 行动节拍：等待玩家完成制作/交互后调用 Advance()
@@ -137,6 +140,12 @@ namespace PastryWorld.Narrative
                     // 对话节拍：显示对话文本，等待玩家点击继续
                     break;
             }
+        }
+
+        private IEnumerator AdvanceNextFrame()
+        {
+            yield return null;
+            Advance();
         }
 
         private void BuildLookup()

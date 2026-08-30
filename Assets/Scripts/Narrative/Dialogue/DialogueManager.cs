@@ -100,21 +100,21 @@ namespace PastryWorld.Narrative
                 _instance = null;
         }
 
-        /// <summary>开始一段对话。已有对话进行中则忽略。</summary>
-        public void StartDialogue(DialogueSO dialogue)
+        /// <summary>开始一段对话。已有对话进行中则忽略。返回是否真正开始。</summary>
+        public bool StartDialogue(DialogueSO dialogue)
         {
-            if (dialogue == null) return;
+            if (dialogue == null) return false;
             if (IsDialogueActive)
             {
                 Debug.LogWarning($"[DialogueManager] 对话 {CurrentDialogue?.dialogueId} 进行中，忽略新对话 {dialogue.dialogueId}");
-                return;
+                return false;
             }
 
             var startNode = dialogue.StartNode;
             if (startNode == null)
             {
                 Debug.LogError($"[DialogueManager] 对话 {dialogue.dialogueId} 无入口节点（startNodeId={dialogue.startNodeId}）");
-                return;
+                return false;
             }
 
             CurrentDialogue = dialogue;
@@ -123,6 +123,7 @@ namespace PastryWorld.Narrative
             SetPlayerLocked(true);
             _eventBus.Publish(new DialogueStartedEvent { dialogueId = dialogue.dialogueId });
             EnterNode(startNode);
+            return true;
         }
 
         /// <summary>无分支节点的推进（UI 点击）。</summary>
@@ -238,8 +239,8 @@ namespace PastryWorld.Narrative
             var binding = _beatBindings.Find(b => b.beatId == evt.beatId);
             if (binding == null || binding.dialogue == null) return;
 
-            _startedFromBeat = true;
-            StartDialogue(binding.dialogue);
+            // 仅当对话真正开始时才标记节拍联动，拒绝路径不泄漏标志
+            _startedFromBeat = StartDialogue(binding.dialogue);
         }
 
         private void SetPlayerLocked(bool locked)

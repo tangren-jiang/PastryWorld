@@ -45,7 +45,9 @@ namespace PastryWorld.Craft
         /// </summary>
         public virtual float Evaluate(float actualValue, float targetValue, float tolerance)
         {
-            if (tolerance <= 0f) return 1f;
+            // 零容差语义 = 必须完全命中（而非任意输入满分）
+            if (tolerance <= 0f)
+                return Mathf.Abs(actualValue - targetValue) < Mathf.Epsilon ? 1f : 0f;
 
             float diff = Mathf.Abs(actualValue - targetValue);
             float baseScore = Mathf.Clamp01(1f - diff / tolerance);
