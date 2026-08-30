@@ -429,8 +429,8 @@ namespace PastryWorld.Codex
             scroll.vertical = true;
             scroll.scrollSensitivity = 20f;
 
-            // 右栏详情（子控件字段已在 CreateDetailPanel 内赋值）
-            CreateDetailPanel(paperGo.transform);
+            // 右栏详情（子控件字段在 CreateDetailPanel 内赋值）
+            _detailPanel = CreateDetailPanel(paperGo.transform);
         }
 
         private RectTransform CreateDetailPanel(Transform parent)
@@ -446,8 +446,8 @@ namespace PastryWorld.Codex
             // 详情页（翻页动画作用体）
             var pageGo = new GameObject("Page");
             pageGo.transform.SetParent(panelGo.transform, false);
-            var pageRt = pageGo.AddComponent<RectTransform>();
-            Stretch(pageRt);
+            _detailPage = pageGo.AddComponent<RectTransform>();
+            Stretch(_detailPage);
 
             // 0: 插图框
             var portraitGo = new GameObject("Portrait");
@@ -461,44 +461,44 @@ namespace PastryWorld.Codex
             portraitRt.anchoredPosition = new Vector2(0f, -20f);
 
             // 1: 标题
-            var title = CreateChildText(pageGo.transform, "Title", 30);
-            title.fontStyle = FontStyles.Bold;
-            var titleRt = title.rectTransform;
+            _detailTitle = CreateChildText(pageGo.transform, "Title", 30);
+            _detailTitle.fontStyle = FontStyles.Bold;
+            var titleRt = _detailTitle.rectTransform;
             titleRt.anchorMin = new Vector2(0f, 1f);
             titleRt.anchorMax = new Vector2(1f, 1f);
             titleRt.pivot = new Vector2(0.5f, 1f);
             titleRt.sizeDelta = new Vector2(0f, 40f);
             titleRt.anchoredPosition = new Vector2(0f, -214f);
-            title.alignment = TextAlignmentOptions.Center;
+            _detailTitle.alignment = TextAlignmentOptions.Center;
 
             // 2: 品质徽标
-            var quality = CreateChildText(pageGo.transform, "Quality", 22);
-            var qualityRt = quality.rectTransform;
+            _detailQuality = CreateChildText(pageGo.transform, "Quality", 22);
+            var qualityRt = _detailQuality.rectTransform;
             qualityRt.anchorMin = new Vector2(0f, 1f);
             qualityRt.anchorMax = new Vector2(1f, 1f);
             qualityRt.pivot = new Vector2(0.5f, 1f);
             qualityRt.sizeDelta = new Vector2(0f, 28f);
             qualityRt.anchoredPosition = new Vector2(0f, -258f);
-            quality.alignment = TextAlignmentOptions.Center;
+            _detailQuality.alignment = TextAlignmentOptions.Center;
 
             // 3: 描述
-            var desc = CreateChildText(pageGo.transform, "Desc", 22);
-            desc.enableWordWrapping = true;
-            var descRt = desc.rectTransform;
+            _detailDesc = CreateChildText(pageGo.transform, "Desc", 22);
+            _detailDesc.enableWordWrapping = true;
+            var descRt = _detailDesc.rectTransform;
             descRt.anchorMin = new Vector2(0f, 0f);
             descRt.anchorMax = new Vector2(1f, 1f);
             descRt.offsetMin = new Vector2(28f, 60f);
             descRt.offsetMax = new Vector2(-28f, -296f);
 
             // 4: 交叉索引
-            var related = CreateChildText(pageGo.transform, "Related", 19);
-            var relatedRt = related.rectTransform;
+            _detailRelated = CreateChildText(pageGo.transform, "Related", 19);
+            var relatedRt = _detailRelated.rectTransform;
             relatedRt.anchorMin = new Vector2(0f, 0f);
             relatedRt.anchorMax = new Vector2(1f, 0f);
             relatedRt.pivot = new Vector2(0.5f, 0f);
             relatedRt.sizeDelta = new Vector2(0f, 30f);
             relatedRt.anchoredPosition = new Vector2(0f, 18f);
-            related.alignment = TextAlignmentOptions.MidlineLeft;
+            _detailRelated.alignment = TextAlignmentOptions.MidlineLeft;
 
             return panelRt;
         }

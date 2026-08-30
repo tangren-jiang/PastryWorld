@@ -77,7 +77,9 @@ namespace PastryWorld.Narrative
         }
 
         /// <summary>
-        /// 立即停止播放并隐藏（不发布完成事件）。
+        /// 立即停止播放并隐藏。
+        /// 若正在播放则先发布 MemoryClipCompletedEvent——监听方（节拍链）依赖该事件推进，
+        /// 不发布会使 Memory 节拍永久卡死。
         /// </summary>
         public void Stop()
         {
@@ -87,11 +89,21 @@ namespace PastryWorld.Narrative
                 _playRoutine = null;
             }
 
-            CleanupFullscreen(_currentClip);
-
             if (_currentClip != null)
             {
+                var interrupted = _currentClip;
+                CleanupFullscreen(interrupted);
                 _currentClip = null;
+
+                _eventBus?.Publish(new MemoryClipCompletedEvent
+                {
+                    clipId = interrupted.clipId,
+                    playMode = interrupted.playMode
+                });
+            }
+            else
+            {
+                CleanupFullscreen(null);
             }
 
             if (_audioSource != null && _audioSource.isPlaying)

@@ -50,6 +50,16 @@ namespace PastryWorld.Craft.Dough
             CreateBones();
         }
 
+        void OnDestroy()
+        {
+            // 运行时创建的 Mesh 为非托管资源，必须显式销毁，避免场景反复加载泄漏
+            if (_mesh != null)
+            {
+                Destroy(_mesh);
+                _mesh = null;
+            }
+        }
+
         void Update()
         {
             // 更新所有骨骼的弹簧物理
