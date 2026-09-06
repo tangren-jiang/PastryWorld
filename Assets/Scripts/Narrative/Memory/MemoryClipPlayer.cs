@@ -179,17 +179,20 @@ namespace PastryWorld.Narrative
 
             _canvasGroup.alpha = 0f;
 
+            // T15 全屏模式收尾：解锁输入 + 恢复原 BGM
+            CleanupFullscreen(clip);
+
+            // 先清状态再发事件：若监听方在事件处理器内同步调用 Play()/Stop()
+            // （如连续 Memory 节拍经 DemoFlowController→BeatManager 转发），
+            // 残留的 _currentClip/_playRoutine 会导致完成事件二次发布与双协程互踩。
+            _currentClip = null;
+            _playRoutine = null;
+
             _eventBus?.Publish(new MemoryClipCompletedEvent
             {
                 clipId = clip.clipId,
                 playMode = clip.playMode
             });
-
-            // T15 全屏模式收尾：解锁输入 + 恢复原 BGM
-            CleanupFullscreen(clip);
-
-            _currentClip = null;
-            _playRoutine = null;
         }
 
         /// <summary>T15 全屏模式开场：锁玩家输入 + 切换 BGM（记录原 BGM 以便恢复）。</summary>
