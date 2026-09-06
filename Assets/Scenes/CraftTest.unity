@@ -175,6 +175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxAllowableDistance: 100
   _maxSamples: 64
+  _adaptive: {fileID: 0}
+  _adaptiveScoreCap: 0.9
 --- !u!114 &126032477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -740,6 +742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1054727793}
   - component: {fileID: 1054727792}
+  - component: {fileID: 1054727794}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -813,6 +816,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1054727794
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054727791}
+  m_Enabled: 1
 --- !u!1 &1183165150
 GameObject:
   m_ObjectHideFlags: 0
@@ -845,6 +856,9 @@ MonoBehaviour:
   _steps:
   - {fileID: 126032475}
   _autoStart: 1
+  _stepTransitionDelay: 0.5
+  _recipeId: 
+  _miniCraftMode: 0
 --- !u!4 &1183165152
 Transform:
   m_ObjectHideFlags: 0
@@ -891,6 +905,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxAllowableDistance: 100
   _maxSamples: 64
+  _adaptive: {fileID: 0}
+  _adaptiveScoreCap: 0.9
 --- !u!4 &1331412265
 Transform:
   m_ObjectHideFlags: 0
